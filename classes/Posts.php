@@ -4,7 +4,7 @@ namespace StudioGram;
 
 if (!defined('ABSPATH')) exit;
 
-if (!class_exists('StudioGram\Setup')) :
+if (!class_exists('StudioGram\Posts')) :
     class Posts
     {
         public function __construct()
