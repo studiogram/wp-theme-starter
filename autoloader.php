@@ -8,6 +8,6 @@ spl_autoload_register(function ($class) {
     $relativeClass = substr($class, strlen($namespacePrefix));
     $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
     if (file_exists($file)) {
-        require $file;
+        require_once $file;
     }
 });
