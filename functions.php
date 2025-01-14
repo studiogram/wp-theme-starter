@@ -8,4 +8,5 @@ if (!defined('TG_THEME_FILE')) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/autoloader.php';
+Timber\Timber::init();
 new \StudioGram\Test();
