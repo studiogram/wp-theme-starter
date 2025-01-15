@@ -1,13 +1,12 @@
 {
-    "name": "studiogram/example",
-    "title": "Example",
-    "style": ["file:./block.min.css"],
-    "script": ["file:./block.min.js"],
-    "category": "formatting",
-    "icon": "format-aside",
-    "keywords": ["example"],
-    "acf": {
-      "mode": "preview"
-    }
+  "name": "studiogram/test",
+  "title": "Test",
+  "style": ["file:./assets/styles.min.css"],
+  "script": ["file:./assets/scripts.min.js"],
+  "category": "formatting",
+  "icon": "format-aside",
+  "keywords": ["test"],
+  "acf": {
+    "mode": "preview"
   }
-  
+}
