@@ -1,1 +1,0 @@
-var test="new";console.log(test);

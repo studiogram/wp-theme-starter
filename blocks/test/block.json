@@ -1,0 +1,13 @@
+{
+    "name": "studiogram/example",
+    "title": "Example",
+    "style": ["file:./block.min.css"],
+    "script": ["file:./block.min.js"],
+    "category": "formatting",
+    "icon": "format-aside",
+    "keywords": ["example"],
+    "acf": {
+      "mode": "preview"
+    }
+  }
+  
