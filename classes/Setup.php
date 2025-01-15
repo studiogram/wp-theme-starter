@@ -14,6 +14,9 @@ if (!class_exists('StudioGram\Setup')) :
         {
             add_action('init', [$this, 'wp_init']);
             add_action('wp_default_scripts', [$this, 'remove_jquery_migrate']);
+            add_filter('comments_open', '__return_false', 99, 2);
+            add_filter('pings_open', '__return_false', 99, 2);
+            add_filter('comments_array', '__return_empty_array', 10, 2);
             error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
         }
 
@@ -24,6 +27,7 @@ if (!class_exists('StudioGram\Setup')) :
         {
             $this->disable_emojis();
             $this->remove_actions();
+            $this->remove_comments();
             add_action('wp_enqueue_scripts', [$this, 'remove_styles_scripts']);
             add_filter('the_generator', [$this, 'remove_version']);
             add_filter('upload_mimes', [$this, 'add_mime_types']);
@@ -56,17 +60,17 @@ if (!class_exists('StudioGram\Setup')) :
         {
             $language_prefix = STUDIOGRAM_LANGUAGES ? pll_current_language() : '';
 
-            $context['header'] = get_field('header', self::CUSTOM_INFOS . $language_prefix);
-            $context['footer'] = get_field('footer', self::CUSTOM_INFOS . $language_prefix);
-            $context['texts'] = get_field('texts', self::CUSTOM_TEXTS . $language_prefix);
-            $context['buttons'] = get_field('buttons', self::CUSTOM_TEXTS . $language_prefix);
+            // $context['header'] = get_field('header', self::CUSTOM_INFOS . $language_prefix);
+            // $context['footer'] = get_field('footer', self::CUSTOM_INFOS . $language_prefix);
+            // $context['texts'] = get_field('texts', self::CUSTOM_TEXTS . $language_prefix);
+            // $context['buttons'] = get_field('buttons', self::CUSTOM_TEXTS . $language_prefix);
 
-            if (STUDIOGRAM_LANGUAGES) {
-                $context['languages'] = array_reverse(pll_the_languages(['raw' => 1]));
-                $context['current_language'] = pll_current_language();
-                $context['home_url'] = pll_home_url(pll_current_language());
-                $context['posts_url'] = get_the_permalink(pll_get_post(get_option('page_for_posts')));
-            }
+            // if (STUDIOGRAM_LANGUAGES) {
+            //     $context['languages'] = array_reverse(pll_the_languages(['raw' => 1]));
+            //     $context['current_language'] = pll_current_language();
+            //     $context['home_url'] = pll_home_url(pll_current_language());
+            //     $context['posts_url'] = get_the_permalink(pll_get_post(get_option('page_for_posts')));
+            // }
 
             return $context;
         }
@@ -153,6 +157,24 @@ if (!class_exists('StudioGram\Setup')) :
             remove_action('wp_head', 'rsd_link');
             remove_action('wp_head', 'wlwmanifest_link');
             remove_action('wp_head', 'wp_shortlink_wp_head');
+        }
+
+        /**
+         * Remove comments
+         */
+        private function remove_comments()
+        {
+            global $pagenow;
+            if ($pagenow === 'edit-comments.php') {
+                wp_redirect(admin_url());
+                exit;
+            }
+            foreach (get_post_types() as $post_type) {
+                if (post_type_supports($post_type, 'comments')) {
+                    remove_post_type_support($post_type, 'comments');
+                    remove_post_type_support($post_type, 'trackbacks');
+                }
+            }
         }
 
         /**
