@@ -20,3 +20,4 @@ new \StudioGram\Forms();
 new \StudioGram\Users();
 new \StudioGram\Admin();
 new \StudioGram\Ajax();
+new \StudioGram\Emails();

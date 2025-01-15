@@ -5,7 +5,7 @@
     "script": ["file:./block.min.js"],
     "category": "formatting",
     "icon": "format-aside",
-    "keywords": ["actualites", "news", "actualités"],
+    "keywords": ["example"],
     "acf": {
       "mode": "preview"
     }
