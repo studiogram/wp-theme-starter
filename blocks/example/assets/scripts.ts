@@ -1,3 +1,4 @@
-const test = 'new';
-
-console.log(test);
+(() => {
+    const test = 'new';
+    console.log(test);
+})();
