@@ -1,75 +1,88 @@
+'use strict';
 const gulp = require('gulp');
-const typescript = require('gulp-typescript');
-const sass = require('gulp-sass')(require('sass'));
+const plumber = require('gulp-plumber');
+const browsersync = require('browser-sync').create();
+const rollup = require('gulp-better-rollup');
+const babel = require('@rollup/plugin-babel');
+const resolve = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('gulp-terser');
+const concat = require('gulp-concat');
+const sass = require('gulp-sass')(require('sass'));
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
 const cleanCSS = require('gulp-clean-css');
-const rename = require('gulp-rename');
-const uglify = require('gulp-uglify');
-const path = require('path');
+const npmDist = require('gulp-npm-dist');
 
-// Define the path for blocks
-const paths = {
-  scss: 'assets/styles/*.scss',
-  cssOutput: 'build/styles/',
-  ts: 'assets/scripts/*.ts',
-  jsOutput: 'build/scripts/',
-  blocks: path.join(__dirname, 'blocks'),
+const browserSync = () => {
+  return new Promise((resolve) => {
+    browsersync.init({
+      proxy: 'https://theme.localhost/',
+      files: ['views/**/*', 'assets/**/*'],
+    });
+    resolve();
+  });
 };
 
-function scripts() {
+const scripts = () => {
   return gulp
-    .src(paths.ts) // Source TypeScript files
-    .pipe(typescript({ noImplicitAny: true })) // Compile TypeScript to JavaScript
-    .pipe(uglify()) // Minify JavaScript
-    .pipe(rename((file) => {
-      file.basename += '.min'; // Append .min to the file name
-    }))
-    .pipe(gulp.dest(paths.jsOutput)); // Output to destination folder
-}
+    .src('./assets/scripts/*.js')
+    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
+    .pipe(gulp.dest('./build/scripts/'));
+};
 
-function styles() {
+const scriptsMain = () => {
   return gulp
-    .src(paths.scss) // Source SCSS files
-    .pipe(sass().on('error', sass.logError)) // Compile SCSS to CSS
-    .pipe(cleanCSS()) // Minify CSS
-    .pipe(rename((file) => {
-      file.basename += '.min'; // Append .min to the file name
-    }))
-    .pipe(gulp.dest(paths.cssOutput)); // Output to the destination folder
-}
+    .src(['./build/scripts/main.js'])
+    .pipe(plumber())
+    .pipe(concat('main.min.js'))
+    .pipe(terser())
+    .pipe(gulp.dest('./build/scripts/'))
+    .pipe(browsersync.stream());
+};
 
-function blockScripts() {
+const styles = () => {
   return gulp
-    .src(`${paths.blocks}/**/assets/scripts.ts`) // Target scripts.ts files inside any block's assets folder
-    .pipe(typescript({ noImplicitAny: true })) // Compile TS to JS
-    .pipe(uglify()) // Minify JS
-    .pipe(rename({ suffix: '.min' })) // Add .min to the filename
-    .pipe(gulp.dest((file) => {
-      // Output in the same folder as the original file (inside `assets`)
-      return file.base; // This ensures the output goes into the same folder
-    }));
-}
+    .src('./assets/styles/*.scss')
+    .pipe(sass())
+    .pipe(postcss([tailwindcss(), autoprefixer()]))
+    .pipe(cleanCSS({ compatibility: 'ie8' }))
+    .pipe(gulp.dest('./build/styles/'));
+};
 
-// Task to compile and minify SCSS files
-function blockStyles() {
+const stylesMain = () => {
   return gulp
-    .src(`${paths.blocks}/**/assets/styles.scss`) // Target styles.scss files inside any block's assets folder
-    .pipe(sass().on('error', sass.logError)) // Compile SCSS to CSS
-    .pipe(cleanCSS()) // Minify CSS
-    .pipe(rename({ suffix: '.min' })) // Add .min to the filename
-    .pipe(gulp.dest((file) => {
-      // Output in the same folder as the original file (inside `assets`)
-      return file.base; // This ensures the output goes into the same folder
-    }));
-}
+    .src(['./build/styles/main.css'], {
+      allowEmpty: true,
+    })
+    .pipe(plumber())
+    .pipe(concat('main.min.css'))
+    .pipe(cleanCSS({ compatibility: 'ie8' }))
+    .pipe(gulp.dest('./build/styles/'))
+    .pipe(browsersync.stream());
+};
 
-// Watch for changes and recompile
-function watch() {
-  gulp.watch(paths.blocks + '/**/assets/scripts.ts', blockScripts);
-  gulp.watch(paths.blocks + '/**/assets/styles.scss', blockStyles);
-  gulp.watch(paths.ts, scripts);
-  gulp.watch(paths.scss, styles);
-}
+const libs = () => {
+  return gulp
+    .src(
+      npmDist({
+        copyUnminified: true,
+        excludes: ['/**/*.txt', '/**/*.map'],
+      }),
+      { base: './node_modules' }
+    )
+    .pipe(gulp.dest('./build/libs/'));
+};
 
+const watch = () => {
+  gulp.watch('./assets/styles/*.scss', gulp.series(styles, stylesMain));
+  gulp.watch('./assets/scripts/*.js', gulp.series(scripts, scriptsMain));
+};
 
-exports.watch = gulp.series(styles, scripts, blockStyles, blockScripts, watch);
+exports.libs = libs;
+exports.styles = styles;
+exports.stylesMain = stylesMain;
+exports.scripts = scripts;
+exports.scriptsMain = scriptsMain;
+exports.watch = gulp.series(gulp.parallel(watch, browserSync));

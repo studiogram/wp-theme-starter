@@ -1,4 +1,1 @@
-(() => {
-  const test = 'new';
-  console.log(test);
-})();
+console.log('test');

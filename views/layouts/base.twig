@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html {{ site.language_attributes }}>
-    <head>
-        <meta charset="{{ site.charset }}" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="pingback" href="{{ site.pingback_url }}" />
-        <link rel="profile" href="http://gmpg.org/xfn/11">
-        <title>{% if wp_title is defined %} {{wp_title}} {% else %} {{site.name}} {% endif %}</title>
-        {{ function('wp_head') }}
-        {% include "partials/meta/view.twig" %}
-    </head>
+  <head>
+    <meta charset="{{ site.charset }}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="pingback" href="{{ site.pingback_url }}" />
+    <link rel="profile" href="http://gmpg.org/xfn/11" />
+    <title>
+      {% if wp_title is defined %}
+        {{ wp_title }}
+      {% else %}
+        {{ site.name }}
+      {% endif %}
+    </title>
+    {{ function('wp_head') }}
+    {% include 'partials/meta/view.twig' %}
+  </head>
 
-    <body class="{{ body_class }}">
-        {{ function('wp_body_open') }}
-        <a class="skip-link screen-reader-text" href="#content">{{ _e('Skip to content') }}</a>
-        <header class="header">
-            {% block header %}
-                <div class="wrapper">
-                    <h1 class="hdr-logo">
-                        <a class="hdr-logo-link" href="{{ site.url }}">{{ site.name }}</a>
-                    </h1>
-                    <nav id="nav-main" class="nav-main">
-                        {# {% include 'partials/menu.twig' with {
+  <body class="{{ body_class }}">
+    {{ function('wp_body_open') }}
+    <a class="skip-link screen-reader-text" href="#content">{{ _e('Skip to content') }}</a>
+    <header class="header">
+      {% block header %}
+        <div class="wrapper">
+          <h1 class="hdr-logo"><a class="hdr-logo-link" href="{{ site.url }}">{{ site.name }}</a></h1>
+          <nav id="nav-main" class="nav-main">
+            {# {% include 'partials/menu.twig' with {
                             items: menu.get_items
                         } %} #}
-                    </nav>
-                    <!-- #nav -->
-                </div>
-            {% endblock %}
-        </header>
+          </nav>
+          <!-- #nav -->
+        </div>
+      {% endblock %}
+    </header>
 
-        <section id="content" class="content-wrapper">
-            {% if title %}
-                <h1>{{ title }}</h1>
-            {% endif %}
-            <div class="wrapper">
-                {% block content %}
-                    Sorry, no content
-                {% endblock %}
-            </div>
-        </section>
-
-        {% block footer %}
-            {# {% include 'partials/footer.twig' %} #}
+    <section id="content" class="content-wrapper">
+      {% if title %}
+        <h1>{{ title }}</h1>
+      {% endif %}
+      <div class="wrapper">
+        {% block content %}
+          Sorry, no content
         {% endblock %}
+      </div>
+    </section>
 
-        {{ function('wp_footer') }}
-    </body>
+    {% block footer %}
+      {# {% include 'partials/footer.twig' %} #}
+    {% endblock %}
+
+    {{ function('wp_footer') }}
+  </body>
 </html>

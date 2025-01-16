@@ -47,10 +47,10 @@ if (!class_exists('StudioGram\Gutemberg')) :
          */
         public function disable_scripts()
         {
-            // wp_dequeue_style('wp-block-library');
-            // wp_dequeue_style('wp-block-library-theme');
-            // wp_dequeue_style('global-styles');
-            // wp_dequeue_style('classic-theme-styles');
+            wp_dequeue_style('wp-block-library');
+            wp_dequeue_style('wp-block-library-theme');
+            wp_dequeue_style('global-styles');
+            wp_dequeue_style('classic-theme-styles');
         }
 
         public function limit_block_type($allowed_blocks)
