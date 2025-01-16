@@ -18,8 +18,9 @@ if (!class_exists('StudioGram\Gutemberg')) :
             add_filter('block_editor_settings_all', [$this, 'remove_blocks_suggestions'], 10, 1);
         }
 
+
         /**
-         * Hide Gutemberg block suggestions
+         * @param array $editor_settings
          */
         public function remove_blocks_suggestions($editor_settings)
         {
@@ -29,9 +30,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
             return $editor_settings;
         }
 
-        /**
-         * Disable Gutemberg for specific post types
-         */
+
         public function disable_post_types($use_block_editor, $post)
         {
             $types = [];
@@ -42,9 +41,6 @@ if (!class_exists('StudioGram\Gutemberg')) :
         }
 
 
-        /**
-         * Disable Gutemberg scripts
-         */
         public function disable_scripts()
         {
             wp_dequeue_style('wp-block-library');
@@ -58,7 +54,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
             $acf_blocks = STUDIOGRAM_BLOCKS_PATH;
             $acf_blocks = scandir($acf_blocks);
             if ($acf_blocks) :
-                $allowed_blocks = array();
+                $allowed_blocks = [];
                 // $allowed_blocks[] = 'core/paragraph';
                 foreach ($acf_blocks as $key => $acf_block) {
                     if ($acf_block == '.' || $acf_block == '..') {
@@ -71,9 +67,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
             return $allowed_blocks;
         }
 
-        /**
-         * Register local blocks
-         */
+
         public function register_acf_blocks()
         {
             foreach ($blocks = new \DirectoryIterator(STUDIOGRAM_THEME_DIR . '/blocks') as $item) {
@@ -88,13 +82,11 @@ if (!class_exists('StudioGram\Gutemberg')) :
             }
         }
 
-        /**
-         * Rendering php file
-         */
+
         public function render_block($block)
         {
             $slug = str_replace('studiogram/', '', $block['name']);
-            $file = get_theme_file_path('blocks/' . $slug . '/block.php');
+            $file = get_theme_file_path('views/blocks/' . $slug . '/block.php');
             $context = Timber::context();
 
             if ($file) {
@@ -106,7 +98,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
                 $context['block'] = $block;
                 $context['fields'] = get_fields();
                 $context['test'] = 'autre';
-                Timber::render('blocks/' . $slug . '/block.twig', $context);
+                Timber::render('views/blocks/' . $slug . '/block.twig', $context);
             }
         }
     }

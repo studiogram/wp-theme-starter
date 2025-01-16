@@ -1,15 +1,17 @@
 {% extends 'views/layouts/base.twig' %}
 
 {% block content %}
-  TEST +
-  {{ post.content }} {{ front }}
+  <div data-taxi-view="frontPage">
+    <a href="/contact" data-transition="special">CONTACT</a>
+    {{ post.content }} {{ front }}
 
-  <div class="grid grid-cols-6 gap-x-[20px] px-[20px] md:grid-cols-14 md:gap-x-[30px] md:px-0">
-    <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
-    <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
-  </div>
-  <div class="grider">
-    <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
-    <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
+    <div class="grid grid-cols-6 gap-x-[20px] px-[20px] md:grid-cols-14 md:gap-x-[30px] md:px-0">
+      <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
+      <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
+    </div>
+    <div class="grider">
+      <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
+      <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
+    </div>
   </div>
 {% endblock %}

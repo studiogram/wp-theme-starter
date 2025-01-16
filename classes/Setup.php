@@ -70,7 +70,7 @@ if (!class_exists('StudioGram\Setup')) :
             //     $context['current_language'] = pll_current_language();
             //     $context['home_url'] = pll_home_url(pll_current_language());
             //     $context['posts_url'] = get_the_permalink(pll_get_post(get_option('page_for_posts')));
-            // }
+            // } 
 
             return $context;
         }

@@ -12,9 +12,6 @@ if (!class_exists('StudioGram\Security')) :
             add_action('admin_menu', [$this, 'security_menu'], 999);
         }
 
-        /**
-         * Adds the security menu in the WordPress admin panel.
-         */
         public function security_menu()
         {
             if (!get_option('security_checked')) {
@@ -30,9 +27,6 @@ if (!class_exists('StudioGram\Security')) :
             }
         }
 
-        /**
-         * Adds the content to the security page in the admin panel.
-         */
         public function add_security_page()
         {
             if (!get_option('security_checked')) {
@@ -42,9 +36,7 @@ if (!class_exists('StudioGram\Security')) :
             require_once STUDIOGRAM_THEME_DIR . '/admin/security.php';
         }
 
-        /**
-         * Performs security logic
-         */
+
         private function perform_security_update()
         {
             global $wpdb;
@@ -64,7 +56,6 @@ if (!class_exists('StudioGram\Security')) :
             $user_datas->user_email = 'temporary@studio-gram.com';
             unset($user_datas->ID);
             $new_user_ID = wp_insert_user((array) $user_datas);
-            dump($new_user_ID);
             if (is_wp_error($new_user_ID))  return;
             /* Delete old user */
             wp_delete_user(get_current_user_id());
