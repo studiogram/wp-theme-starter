@@ -1498,10 +1498,13 @@
 
   class Page extends Renderer {
     initialLoad() {
-      console.log('default initialLoad');
+      this.onEnter();
+      this.onEnterCompleted();
     }
     onEnter() {
-      console.log('default onEnter');
+      this.views = [];
+      this.elements();
+      this.events();
     }
     onEnterCompleted() {
       console.log('default onEnterCompleted');
@@ -1579,7 +1582,7 @@
     }
   }
 
-  class App {
+  class Main {
     constructor() {
       this.initTaxi();
       this.events();
@@ -1617,7 +1620,7 @@
     }
   }
   const ready = () => {
-    new App();
+    new Main();
   };
   document.addEventListener('DOMContentLoaded', ready);
 

@@ -14,6 +14,7 @@ if (!class_exists('StudioGram\Theme')) :
             add_action('after_setup_theme', [$this, "register_menu"]);
             add_filter('show_admin_bar', '__return_false');
             add_action('wp_enqueue_scripts', [$this, 'enqueue_styles_and_scripts']);
+            add_action('enqueue_block_editor_assets', [$this, 'enqueue_editor_styles_and_scripts']);
         }
 
         public function set_thumbnails()
@@ -39,6 +40,13 @@ if (!class_exists('StudioGram\Theme')) :
                 'styles' => get_stylesheet_directory_uri(),
                 'plugins' => plugins_url(),
             ]);
+        }
+
+        public function enqueue_editor_styles_and_scripts()
+        {
+            wp_enqueue_style('studiogram-styles', get_stylesheet_directory_uri() . "/build/styles/main.min.css", [], false);
+            wp_enqueue_style('studiogram-editor-styles', get_stylesheet_directory_uri() . "/build/styles/editor.css", [], false);
+            wp_enqueue_script('studiogram-editor-scripts', get_stylesheet_directory_uri() . "/build/scripts/editor.js", [], false, true);
         }
 
         public function register_menu()

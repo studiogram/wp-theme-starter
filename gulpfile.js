@@ -45,6 +45,7 @@ const scriptsMain = () => {
 const styles = () => {
   return gulp
     .src('./assets/styles/*.scss')
+    .pipe(plumber())
     .pipe(sass())
     .pipe(postcss([tailwindcss(), autoprefixer()]))
     .pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -76,7 +77,7 @@ const libs = () => {
 };
 
 const watch = () => {
-  gulp.watch('./assets/styles/*.scss', gulp.series(styles, stylesMain));
+  gulp.watch('./assets/styles/**/*.scss', gulp.series(styles, stylesMain));
   gulp.watch('./assets/scripts/*.js', gulp.series(scripts, scriptsMain));
   gulp.watch('./**/*.twig').on('change', browsersync.reload);
 };

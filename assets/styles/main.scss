@@ -1,9 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @use './views/archives';
 @use './views/components';
 @use './views/partials';
 @use './views/singles';
 @use './views/templates';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

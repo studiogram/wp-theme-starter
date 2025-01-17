@@ -1,12 +1,18 @@
 {
   "name": "studiogram/example",
   "title": "Example",
-  "style": ["file:./assets/styles.min.css"],
-  "script": ["file:./assets/scripts.min.js"],
   "category": "formatting",
   "icon": "format-aside",
   "keywords": ["example"],
   "acf": {
     "mode": "preview"
+  },
+  "example": {
+    "attributes": {
+      "mode": "preview",
+      "data": {
+        "preview_image": true
+      }
+    }
   }
 }

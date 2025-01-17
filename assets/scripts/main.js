@@ -4,7 +4,7 @@ import Loader from './transitions/Loader';
 import Special from './transitions/Special';
 import FrontPage from '../../views/templates/front-page/scripts';
 
-class App {
+class Main {
   constructor() {
     this.initTaxi();
     this.events();
@@ -43,7 +43,7 @@ class App {
 }
 
 const ready = () => {
-  new App();
+  new Main();
 };
 
 document.addEventListener('DOMContentLoaded', ready);

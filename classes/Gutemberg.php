@@ -70,7 +70,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
 
         public function register_acf_blocks()
         {
-            foreach ($blocks = new \DirectoryIterator(STUDIOGRAM_THEME_DIR . '/blocks') as $item) {
+            foreach ($blocks = new \DirectoryIterator(STUDIOGRAM_BLOCKS_PATH) as $item) {
                 if (
                     $item->isDir() && !$item->isDot()
                     && file_exists($item->getPathname() . '/block.json')
@@ -83,11 +83,18 @@ if (!class_exists('StudioGram\Gutemberg')) :
         }
 
 
-        public function render_block($block)
+        public function render_block($block, $content = '', $is_preview = false)
         {
+            $context = Timber::context();
             $slug = str_replace('studiogram/', '', $block['name']);
             $file = get_theme_file_path('views/blocks/' . $slug . '/block.php');
-            $context = Timber::context();
+            $preview_image_path = 'views/blocks/' . $slug . '/preview.jpg';
+
+            if ($is_preview && !empty($block['data']['preview_image']) && file_exists(get_theme_file_path($preview_image_path))) {
+                echo '<img src="' . esc_url(get_theme_file_uri($preview_image_path)) . '" style="width:100%; height: auto;" />';
+                return;
+            }
+
 
             if ($file) {
                 extract($block);
