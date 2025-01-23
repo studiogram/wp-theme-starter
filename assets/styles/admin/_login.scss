@@ -1,0 +1,50 @@
+body.login {
+  background: var(--colors_background_primary);
+
+  h1 {
+    a {
+      display: block;
+      width: 100%;
+    }
+  }
+  #language-switcher {
+    display: none !important;
+  }
+  p.message {
+    border: none;
+    text-align: center;
+    box-shadow: none;
+  }
+  .privacy-policy-page-link,
+  #nav,
+  #backtoblog,
+  .dashicons-visibility {
+    display: none;
+  }
+  form {
+    border: none;
+    padding: 25px 20px;
+    margin-top: 0;
+    label {
+      margin-top: 1em;
+      display: inline-block !important;
+    }
+  }
+  #login {
+    margin: 5% auto 0 !important;
+  }
+  #login_error {
+    border: 0px !important;
+    text-align: center;
+    margin-bottom: 0;
+    font-size: 0.9em;
+  }
+  p.submit {
+    text-align: center;
+
+    .button-primary {
+      float: none;
+      margin-top: 0.5rem !important;
+    }
+  }
+}

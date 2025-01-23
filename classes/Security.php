@@ -60,7 +60,7 @@ if (!class_exists('StudioGram\Security')) :
             /* Delete old user */
             wp_delete_user(get_current_user_id());
             /* Update new user */
-            wp_update_user([
+            $admin_ID = wp_update_user([
                 'ID' => $new_user_ID,
                 'user_email' => $user_email,
                 'user_nicename' => $user_nicename,
@@ -74,6 +74,10 @@ if (!class_exists('StudioGram\Security')) :
                 ],
                 ['ID' => $new_user_ID]
             );
+            /* Super admin */
+            $superadmins = get_option('superadmins');
+            if (!in_array($admin_ID, $superadmins)) $superadmins[] = $admin_ID;
+            update_option('superadmins', $superadmins);
         }
     }
 endif;

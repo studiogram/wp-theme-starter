@@ -14,9 +14,6 @@ if (!class_exists('StudioGram\Posts')) :
             // add_filter('add_meta_boxes', [$this, 'disable_side_panels']);
         }
 
-        /**
-         * Remove side blocks
-         */
         public function disable_side_panels()
         {
             // global $wp_meta_boxes;
@@ -24,9 +21,6 @@ if (!class_exists('StudioGram\Posts')) :
             // die();
         }
 
-        /**
-         * New Posts Types
-         */
         public function create_new_post_types()
         {
             /* Expériences */

@@ -1,0 +1,18 @@
+body.wp-admin {
+  #adminmenuwrap {
+    height: 100vh;
+
+    #adminmenu {
+      #toplevel_page_studiogramsecurity a {
+        background: red;
+      }
+      .wp-not-current-submenu .wp-submenu {
+        min-width: 200px;
+      }
+    }
+    .term-parent-wrap,
+    .term-description-wrap {
+      display: none;
+    }
+  }
+}

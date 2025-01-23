@@ -1,4 +1,7 @@
+@use './commons/commons';
+@use './main/main';
 @use './views/archives';
+@use './views/blocks';
 @use './views/components';
 @use './views/partials';
 @use './views/singles';

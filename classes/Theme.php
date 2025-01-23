@@ -9,7 +9,6 @@ if (!class_exists('StudioGram\Theme')) :
     {
         public function __construct()
         {
-
             $this->set_thumbnails();
             add_action('after_setup_theme', [$this, "register_menu"]);
             add_filter('show_admin_bar', '__return_false');
@@ -44,7 +43,6 @@ if (!class_exists('StudioGram\Theme')) :
 
         public function enqueue_editor_styles_and_scripts()
         {
-            wp_enqueue_style('studiogram-styles', get_stylesheet_directory_uri() . "/build/styles/main.min.css", [], false);
             wp_enqueue_style('studiogram-editor-styles', get_stylesheet_directory_uri() . "/build/styles/editor.css", [], false);
             wp_enqueue_script('studiogram-editor-scripts', get_stylesheet_directory_uri() . "/build/scripts/editor.js", [], false, true);
         }
@@ -54,21 +52,6 @@ if (!class_exists('StudioGram\Theme')) :
             register_nav_menus([
                 'header_menu' => __('Header', 'studiogram'),
             ]);
-        }
-
-        /*******************
-         * Instance methods
-         *******************/
-        final protected function __clone()
-        {
-            // cannot be cloned
-            _doing_it_wrong(__FUNCTION__, 'Cheatin&#8217; huh?', '1.0.0');
-        }
-
-        final public function __sleep()
-        {
-            // cannot be serialized
-            _doing_it_wrong(__FUNCTION__, 'Cheatin&#8217; huh?', '1.0.0');
         }
     }
 endif;

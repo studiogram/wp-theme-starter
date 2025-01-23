@@ -12,32 +12,22 @@ if (!class_exists('StudioGram\Setup')) :
 
         public function __construct()
         {
-            add_action('init', [$this, 'wp_init']);
+            $this->disable_emojis();
+            $this->remove_actions();
+            $this->remove_comments();
             add_action('wp_default_scripts', [$this, 'remove_jquery_migrate']);
             add_filter('comments_open', '__return_false', 99, 2);
             add_filter('pings_open', '__return_false', 99, 2);
             add_filter('comments_array', '__return_empty_array', 10, 2);
-            error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
-        }
-
-        /**
-         * WordPress Init Actions.
-         */
-        public function wp_init()
-        {
-            $this->disable_emojis();
-            $this->remove_actions();
-            $this->remove_comments();
             add_action('wp_enqueue_scripts', [$this, 'remove_styles_scripts']);
             add_filter('the_generator', [$this, 'remove_version']);
             add_filter('upload_mimes', [$this, 'add_mime_types']);
             add_filter('admin_footer_text', [$this, 'remove_footer_admin'], 20, 1);
-            add_filter('timber_context', [$this, 'add_acf_options'], 99);
+            add_filter('timber_context', [$this, 'add_timber_context'], 99);
+            error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
         }
 
         /**
-         * Remove jQuery Migrate.
-         * 
          * @param object $scripts
          */
         public function remove_jquery_migrate($scripts)
@@ -51,12 +41,10 @@ if (!class_exists('StudioGram\Setup')) :
         }
 
         /**
-         * Add ACF options to Timber context.
-         * 
          * @param array $context
          * @return array $context
          */
-        public function add_acf_options($context)
+        public function add_timber_context($context)
         {
             $language_prefix = STUDIOGRAM_LANGUAGES ? pll_current_language() : '';
 
@@ -72,12 +60,12 @@ if (!class_exists('StudioGram\Setup')) :
             //     $context['posts_url'] = get_the_permalink(pll_get_post(get_option('page_for_posts')));
             // } 
 
+            $context['body_class'] = 'studiogram ' . $context['body_class'];
+
             return $context;
         }
 
-        /**
-         * Remove styles and scripts.
-         */
+
         public function remove_styles_scripts()
         {
             wp_dequeue_style('wp-block-library');
@@ -89,8 +77,6 @@ if (!class_exists('StudioGram\Setup')) :
         }
 
         /**
-         * Remove footer text.
-         * 
          * @return boolean
          */
         public function remove_footer_admin()
@@ -99,8 +85,6 @@ if (!class_exists('StudioGram\Setup')) :
         }
 
         /**
-         * Accept SVG files in uploads.
-         * 
          * @param array $mimes
          * @return array
          */
@@ -110,17 +94,12 @@ if (!class_exists('StudioGram\Setup')) :
             return $mimes;
         }
 
-        /**
-         * Remove WordPress version.
-         */
         public function remove_version()
         {
             return '';
         }
 
         /**
-         * Disable emojis in TinyMCE editor.
-         * 
          * @param array $plugins
          */
         public function disable_emojis_tinymce($plugins)
@@ -132,8 +111,6 @@ if (!class_exists('StudioGram\Setup')) :
         }
 
         /**
-         * Remove DNS prefetch for emojis.
-         * 
          * @param array $urls
          * @param string $relation_type
          */
@@ -146,9 +123,6 @@ if (!class_exists('StudioGram\Setup')) :
             return $urls;
         }
 
-        /**
-         * Remove unnecessary actions from wp_head.
-         */
         private function remove_actions()
         {
             remove_action('wp_head', 'rest_output_link_wp_head', 10);
@@ -159,9 +133,6 @@ if (!class_exists('StudioGram\Setup')) :
             remove_action('wp_head', 'wp_shortlink_wp_head');
         }
 
-        /**
-         * Remove comments
-         */
         private function remove_comments()
         {
             global $pagenow;
@@ -177,9 +148,7 @@ if (!class_exists('StudioGram\Setup')) :
             }
         }
 
-        /**
-         * Disable emojis in WordPress.
-         */
+
         private function disable_emojis()
         {
             remove_action('wp_head', 'print_emoji_detection_script', 7);

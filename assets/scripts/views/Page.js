@@ -12,6 +12,10 @@ export default class Page extends Renderer {
     this.events();
   }
 
+  elements() {}
+
+  events() {}
+
   onEnterCompleted() {
     console.log('default onEnterCompleted');
   }

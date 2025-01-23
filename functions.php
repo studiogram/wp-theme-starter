@@ -21,3 +21,4 @@ new \StudioGram\Users();
 new \StudioGram\Admin();
 new \StudioGram\Ajax();
 new \StudioGram\Emails();
+new \StudioGram\Menu();

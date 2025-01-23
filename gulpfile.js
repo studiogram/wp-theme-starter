@@ -64,6 +64,18 @@ const stylesMain = () => {
     .pipe(browsersync.stream());
 };
 
+const stylesAdmin = () => {
+  return gulp
+    .src(['./build/styles/admin.css'], {
+      allowEmpty: true,
+    })
+    .pipe(plumber())
+    .pipe(concat('admin.min.css'))
+    .pipe(cleanCSS({ compatibility: 'ie8' }))
+    .pipe(gulp.dest('./build/styles/'))
+    .pipe(browsersync.stream());
+};
+
 const libs = () => {
   return gulp
     .src(
@@ -77,14 +89,20 @@ const libs = () => {
 };
 
 const watch = () => {
-  gulp.watch('./assets/styles/**/*.scss', gulp.series(styles, stylesMain));
+  gulp.watch(
+    './assets/styles/**/*.scss',
+    gulp.series(styles, stylesMain, stylesAdmin)
+  );
+  gulp.watch('./views/**/*.scss', gulp.series(styles, stylesMain, stylesAdmin));
   gulp.watch('./assets/scripts/*.js', gulp.series(scripts, scriptsMain));
+  gulp.watch('./views/**/*.js', gulp.series(scripts, scriptsMain));
   gulp.watch('./**/*.twig').on('change', browsersync.reload);
 };
 
 exports.libs = libs;
 exports.styles = styles;
 exports.stylesMain = stylesMain;
+exports.stylesAdmin = stylesAdmin;
 exports.scripts = scripts;
 exports.scriptsMain = scriptsMain;
 exports.watch = gulp.series(gulp.parallel(watch, browserSync));

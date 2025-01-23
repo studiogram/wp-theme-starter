@@ -26,6 +26,7 @@
   "dependencies": {
     "@unseenco/taxi": "^1.8.0",
     "gsap": "file:gsap-bonus.tgz",
+    "swiper": "^11.2.1",
     "throttle-debounce": "^5.0.2"
   }
 }

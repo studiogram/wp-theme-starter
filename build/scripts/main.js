@@ -1506,6 +1506,8 @@
       this.elements();
       this.events();
     }
+    elements() {}
+    events() {}
     onEnterCompleted() {
       console.log('default onEnterCompleted');
     }
