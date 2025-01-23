@@ -22,16 +22,3 @@ new \StudioGram\Admin();
 new \StudioGram\Ajax();
 new \StudioGram\Emails();
 new \StudioGram\Menu();
-
-
-
-function enqueue_formidable_scripts()
-{
-    dump('ya');
-    if (class_exists('FrmProEntriesController')) {
-        dump('yo');
-        // FrmProFormsHelper::enqueue_front_css(); // Enqueue the CSS
-        // FrmProFormsHelper::enqueue_front_js();  // Enqueue the JavaScript
-    }
-}
-add_action('wp_enqueue_scripts', 'enqueue_formidable_scripts');
