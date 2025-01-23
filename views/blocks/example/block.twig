@@ -9,4 +9,8 @@
     <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
     <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
   </div>
+
+  {% if fields.gform %}
+    {{ function('do_shortcode', '[gravityform id="' ~ fields.gform ~ '"]') }}
+  {% endif %}
 </div>

@@ -2,6 +2,9 @@
 
 namespace StudioGram;
 
+use FrmAppHelper;
+use FrmAddonsController;
+
 if (!defined('ABSPATH')) exit;
 
 if (!class_exists('StudioGram\Theme')) :

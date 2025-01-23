@@ -22,3 +22,12 @@ new \StudioGram\Admin();
 new \StudioGram\Ajax();
 new \StudioGram\Emails();
 new \StudioGram\Menu();
+
+function enqueue_formidable_admin_assets()
+{
+    if (is_admin()) {
+        wp_enqueue_script('formidable-js');
+        wp_enqueue_style('formidable-css');
+    }
+}
+add_action('admin_enqueue_scripts', 'enqueue_formidable_admin_assets');

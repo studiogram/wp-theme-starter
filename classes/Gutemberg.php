@@ -4,6 +4,9 @@ namespace StudioGram;
 
 use Timber\Timber;
 
+use FrmFormsController;
+use FrmSimpleBlocksController;
+
 if (!defined('ABSPATH')) exit;
 
 if (!class_exists('StudioGram\Gutemberg')) :
@@ -56,6 +59,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
             if ($acf_blocks) :
                 $allowed_blocks = [];
                 // $allowed_blocks[] = 'core/paragraph';
+                $allowed_blocks[] = 'formidable/simple-form';
                 foreach ($acf_blocks as $key => $acf_block) {
                     if ($acf_block == '.' || $acf_block == '..') {
                         unset($acf_blocks[$key]);
@@ -64,6 +68,7 @@ if (!class_exists('StudioGram\Gutemberg')) :
                     $allowed_blocks[] = 'studiogram/' . $acf_block;
                 }
             endif;
+
             return $allowed_blocks;
         }
 

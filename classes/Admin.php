@@ -84,7 +84,7 @@ if (!class_exists('StudioGram\Admin')) :
             $login_height = get_field('logo_admin_size', 'custom-theme');
             $padding = $login_height ? $login_height + 60 : 60;
             if ($login_logo && $login_height) {
-                echo "<style>#adminmenuwrap {padding-top: {$padding}px;background: url({$login_logo}) top 40px center/auto {$login_height}px no-repeat;}</style>";
+                echo "<style> #adminmenuwrap{padding-top: {$padding}px !important; background: url({$login_logo}) top 40px center/auto {$login_height}px no-repeat; height: calc(100dvh - {$padding}px) !important;}</style>";
             }
         }
 

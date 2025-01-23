@@ -1,5 +1,6 @@
 body.wp-admin {
   #adminmenuwrap {
+    margin-top: 0 !important;
     height: 100vh;
 
     #adminmenu {
@@ -20,6 +21,13 @@ body.wp-admin {
   #adminmenuwrap,
   #adminmenu {
     background-color: var(--colors_background_primary);
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     a,
     div.wp-menu-image:before {
