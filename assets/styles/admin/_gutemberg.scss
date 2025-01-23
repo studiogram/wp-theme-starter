@@ -1,0 +1,22 @@
+.block-editor-page {
+  .edit-post-fullscreen-mode-close.components-button {
+    background: var(--colors_background_primary);
+  }
+  .components-button {
+    &.is-primary {
+      background: var(--colors_buttons_background) !important;
+      color: var(--colors_buttons_texts) !important;
+    }
+    &.is-secondary {
+      background: none !important;
+      color: var(--colors_buttons_background) !important;
+    }
+    &.is-tertiary,
+    &.is-link {
+      color: black !important;
+    }
+    &.edit-post-fullscreen-mode-close:before {
+      box-shadow: none !important;
+    }
+  }
+}
