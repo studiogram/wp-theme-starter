@@ -35,9 +35,9 @@ class Main {
 
   events() {
     this.taxi.on('NAVIGATE_IN', ({ to, trigger }) => {
-      //console.log('to: ', to);
       document.title = to.page.title;
       document.body.classList = to.page.body.classList;
+      document.head.innerHTML = to.page.head.innerHTML;
     });
   }
 }

@@ -73,7 +73,7 @@ if (!class_exists('StudioGram\Setup')) :
             wp_dequeue_style('wc-block-style');
             wp_dequeue_style('classic-theme-styles');
             wp_dequeue_style('global-styles');
-            wp_deregister_script('jquery');
+            // wp_deregister_script('jquery');
         }
 
         /**
