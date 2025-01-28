@@ -31,3 +31,12 @@ function enqueue_formidable_admin_assets()
     }
 }
 add_action('admin_enqueue_scripts', 'enqueue_formidable_admin_assets');
+
+add_action('after_setup_theme', function () {
+    // Enable support for theme.json
+    add_theme_support('block-templates'); // Enables FSE
+    add_theme_support('editor-styles');  // Ensures editor respects styles
+    add_theme_support('align-wide');    // Support wide/full alignment
+    add_theme_support('custom-spacing'); // Support custom spacing
+    add_theme_support('custom-line-height'); // Support custom line-height
+});

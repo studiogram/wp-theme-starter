@@ -1,8 +1,7 @@
-const views = [
-  // {
-  //   name: "logos",
-  //   Class: Logos,
-  // }
-];
+import { BlockExemple } from '../../../views/blocks/example/scripts';
 
-export default views;
+export const blocks = {
+  example: BlockExemple,
+};
+
+export const views = {};

@@ -1,7 +1,7 @@
 export default class View {
   constructor(el) {
     this.el = el;
-    this.events = [];
+    this.eventsList = [];
     this.elements();
     this.events();
   }

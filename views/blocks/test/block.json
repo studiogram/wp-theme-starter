@@ -7,6 +7,12 @@
   "acf": {
     "mode": "preview"
   },
+  "supports": {
+    "color": {
+      "text": true,
+      "background": true
+    }
+  },
   "example": {
     "attributes": {
       "mode": "preview",

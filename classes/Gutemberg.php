@@ -15,8 +15,8 @@ if (!class_exists('StudioGram\Gutemberg')) :
         public function __construct()
         {
             add_action('init', [$this, 'register_acf_blocks']);
-            add_action('wp_enqueue_scripts', [$this, 'disable_scripts'], 20);
-            add_filter('allowed_block_types_all', [$this, 'limit_block_type']);
+            // add_action('wp_enqueue_scripts', [$this, 'disable_scripts'], 20);
+            add_filter('allowed_block_types_all', [$this, 'limit_block_type'], 10, 2);
             add_filter('use_block_editor_for_post', [$this, 'disable_post_types'], 10, 2);
             add_filter('block_editor_settings_all', [$this, 'remove_blocks_suggestions'], 10, 1);
         }
@@ -58,8 +58,6 @@ if (!class_exists('StudioGram\Gutemberg')) :
             $acf_blocks = scandir($acf_blocks);
             if ($acf_blocks) :
                 $allowed_blocks = [];
-                // $allowed_blocks[] = 'core/paragraph';
-                $allowed_blocks[] = 'formidable/simple-form';
                 foreach ($acf_blocks as $key => $acf_block) {
                     if ($acf_block == '.' || $acf_block == '..') {
                         unset($acf_blocks[$key]);
@@ -68,6 +66,13 @@ if (!class_exists('StudioGram\Gutemberg')) :
                     $allowed_blocks[] = 'studiogram/' . $acf_block;
                 }
             endif;
+
+            /* Template blocks */
+            $template = get_post_meta(get_the_ID(), '_wp_page_template', true);
+            if ($template === 'template-example.php') {
+                $allowed_blocks[] = 'formidable/simple-form';
+                $allowed_blocks[] = 'core/paragraph';
+            }
 
             return $allowed_blocks;
         }
@@ -99,6 +104,8 @@ if (!class_exists('StudioGram\Gutemberg')) :
                 echo '<img src="' . esc_url(get_theme_file_uri($preview_image_path)) . '" style="width:100%; height: auto;" />';
                 return;
             }
+
+            // dump($block);
 
 
             if ($file) {

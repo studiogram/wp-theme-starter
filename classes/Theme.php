@@ -47,7 +47,7 @@ if (!class_exists('StudioGram\Theme')) :
         public function enqueue_editor_styles_and_scripts()
         {
             wp_enqueue_style('studiogram-editor-styles', get_stylesheet_directory_uri() . "/build/styles/editor.css", [], false);
-            wp_enqueue_script('studiogram-editor-scripts', get_stylesheet_directory_uri() . "/build/scripts/editor.js", [], false, true);
+            wp_enqueue_script('studiogram-editor-scripts', get_stylesheet_directory_uri() . "/build/scripts/editor.js", ['wp-dom-ready'], false, true);
         }
 
         public function register_menu()

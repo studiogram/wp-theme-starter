@@ -1,14 +1,26 @@
-<div data-block="example">
-  {{ is_preview }} Example fields : {{ fields.title }} {{ fields.images }} {{ test }} {{ post_ID }}
+{% set text_color = block.acf.text_color|default('var(--wp--preset--color--primary)') %}
+{% set background_color = block.acf.background_color|default('var(--wp--preset--color--secondary)') %}
+{% set font_size = block.acf.font_size|default('var(--wp--preset--font-size--medium)') %}
 
-  <div class="grid grid-cols-6 gap-x-[20px] px-[20px] md:grid-cols-14 md:gap-x-[30px] md:px-0">
-    <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
-    <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
+<div data-block="example" data-block-id="{{ block.id }}">
+  {{ is_preview }} Example fields : {{ fields.title }} {{ test }} {{ post_ID }}
+
+  <div class="custom-block" style="color: {{ block.textColor }}; background-color: {{ block.backgroundColor }}; font-size: {{ font_size }};">
+    <h2>BLOCK TEST {{ block.classes }} {{ block.textColor }} {{ block.backgroundColor }}</h2>
   </div>
-  <div class="grider">
-    <div class="col-start-1 col-span-6 md:col-span-4 bg-customBlue">test</div>
-    <div class="col-start-1 col-span-6 md:col-start-5 md:col-span-10">test</div>
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      {% for image_ID in fields.images %}
+        <div class="swiper-slide">{{ image_ID }}</div>
+      {% endfor %}
+    </div>
   </div>
+
+  <div class="next">NEXT</div>
+  <div class="prev">PREV</div>
+
+  <div class="swiper-pagination"></div>
 
   {% if fields.gform %}
     {{ function('do_shortcode', '[gravityform id="' ~ fields.gform ~ '"]') }}
