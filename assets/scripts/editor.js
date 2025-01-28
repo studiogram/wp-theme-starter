@@ -1,6 +1,9 @@
 import domReady from '@wordpress/dom-ready';
 import { blocks } from './views/list';
 
+const { getBlocks: getBlockList } = wp.data.select('core/editor');
+let blockList = getBlockList().map((block) => block.clientId);
+
 class Editor {
   constructor() {
     this.blocks = {};
@@ -8,8 +11,6 @@ class Editor {
   }
 
   init() {
-    const { getBlocks: getBlockList } = wp.data.select('core/editor');
-    let blockList = getBlockList().map((block) => block.clientId);
     wp.data.subscribe(() => {
       const newBlockList = getBlockList().map((block) => block.clientId);
       const blockListChanged = newBlockList.length !== blockList.length;
@@ -24,7 +25,7 @@ class Editor {
             const element = document.querySelector(blockElementSelector);
             if (element) {
               const name = element.getAttribute('data-block');
-              const blockClass = new blocks[name](element);
+              const blockClass = new blocks[name](element, true);
               this.blocks[id] = {
                 name,
                 element,

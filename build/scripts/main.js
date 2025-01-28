@@ -6465,11 +6465,26 @@
   }
 
   class View {
-    constructor(el) {
+    constructor(el, editor = false) {
       this.el = el;
       this.eventsList = [];
       this.elements();
       this.events();
+      if (editor) this.observeEditor();
+    }
+    observeEditor() {
+      const $ = jQuery.noConflict();
+      $(document).on('change', '.acf-field input, .acf-field textarea, .acf-field select', this.updateBlock.bind(this));
+    }
+    updateBlock() {
+      const {
+        select
+      } = wp.data;
+      const selectedBlockId = select('core/block-editor').getSelectedBlockClientId();
+      const blockId = this.el.getAttribute('data-block-id').replace('block_', '');
+      if (selectedBlockId === blockId) {
+        this.update();
+      }
     }
     elements() {}
     events() {}
@@ -6482,7 +6497,7 @@
     } = {}) {
       if (!target || !name || !callback || dom && !target.addEventListener || !dom && !target.on) return;
       const fn = bind ? callback.bind(bind) : callback;
-      this.eventList.push({
+      this.eventsList.push({
         target,
         name,
         fn,
@@ -6494,7 +6509,7 @@
     resize() {}
     update() {}
     destroy() {
-      for (const event of this.eventList) {
+      for (const event of this.eventsList) {
         if (event.dom) event.target.removeEventListener(event.name, event.fn);else event.target.off(event.name, event.fn);
         event.destroyed = true;
       }
@@ -6502,8 +6517,8 @@
   }
 
   class BlockExemple extends View {
-    constructor(el) {
-      super(el);
+    constructor(el, editor = false) {
+      super(el, editor);
       this.el = el;
       this.elems();
       this.initSlider();
@@ -6511,10 +6526,10 @@
     elems() {
       this.next = this.el.querySelector('.next');
       this.prev = this.el.querySelector('.prev');
-      this.slider = this.el.querySelector('.swiper');
+      this.wrapper = this.el.querySelector('.swiper-wrapper');
     }
     initSlider() {
-      const swiper = new Swiper(this.slider, {
+      this.swiper = new Swiper(this.el.querySelector('.swiper'), {
         modules: [Navigation, Pagination],
         slidesPerView: 1,
         spaceBetween: 24,
@@ -6532,102 +6547,24 @@
           768: {
             slidesPerView: 2
           }
-        },
-        observer: true,
-        observeSlideChildren: true,
-        on: {
-          observerUpdate: () => {
-            console.log('observe changes');
-            // this.update();
-            // swiper.update();
-            // swiper.updateSlides();
-          }
         }
       });
-      this.swiper = swiper;
+    }
+    update() {
+      setTimeout(() => {
+        if (this.swiper) {
+          this.swiper.update();
+          this.swiper.updateSlides();
+        }
+      }, 1000);
     }
     destroy() {
-      console.log('destroy: ', this.el);
+      super.destroy();
       if (this.swiper) {
         this.swiper.destroy();
       }
     }
   }
-
-  // import Swiper from 'swiper';
-  // import { Navigation, Pagination } from 'swiper/modules';
-  // import View from '../../../assets/scripts/views/View';
-
-  // export class BlockExemple extends View {
-  //   constructor(el) {
-  //     super(el);
-  //     this.el = el;
-  //     this.elems();
-  //     this.initSlider();
-
-  //     // const $ = jQuery.noConflict();
-  //     // $(document).on(
-  //     //   'change',
-  //     //   '.acf-field input, .acf-field textarea, .acf-field select',
-  //     //   this.updateBlock.bind(this)
-  //     // );
-  //   }
-
-  //   updateBlock() {
-  //     const { select } = wp.data;
-  //     const selectedBlockId =
-  //       select('core/block-editor').getSelectedBlockClientId();
-  //     const blockId = this.el.getAttribute('data-block-id');
-  //     if (selectedBlockId === blockId) {
-  //       this.destroy();
-  //       this.initSlider();
-  //     }
-  //   }
-
-  //   elems() {
-  //     this.blockId = this.el.getAttribute('data-block-id');
-  //     this.next = this.el.querySelector('.next');
-  //     this.prev = this.el.querySelector('.prev');
-  //     this.slider = this.el.querySelector('.swiper');
-  //   }
-
-  //   initSlider() {
-  //     this.swiper = new Swiper(this.slider, {
-  //       modules: [Navigation, Pagination],
-  //       slidesPerView: 1,
-  //       spaceBetween: 24,
-  //       speed: 1000,
-  //       loop: true,
-  //       pagination: {
-  //         el: '.swiper-pagination',
-  //         clickable: true,
-  //       },
-  //       navigation: {
-  //         nextEl: this.next,
-  //         prevEl: this.prev,
-  //       },
-  //       breakpoints: {
-  //         768: {
-  //           slidesPerView: 2,
-  //         },
-  //       },
-  //       // observer: true,
-  //       // observeSlideChildren: true,
-  //       // on: {
-  //       //   observerUpdate: () => {
-  //       //     this.update();
-  //       //     this.updateSlides();
-  //       //   },
-  //       // },
-  //     });
-  //   }
-
-  //   destroy() {
-  //     if (this.swiper) {
-  //       this.swiper.destroy();
-  //     }
-  //   }
-  // }
 
   const blocks = {
     example: BlockExemple
@@ -6642,7 +6579,7 @@
     onEnter() {
       this.page = document.querySelector('[data-taxi]').lastElementChild;
       this.views = [];
-      this.blocks = [];
+      this.blocks = {};
       this.elements();
       this.events();
       this.init();

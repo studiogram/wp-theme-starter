@@ -1,22 +1,19 @@
 'use strict';
 const gulp = require('gulp');
-const plumber = require('gulp-plumber');
 const browsersync = require('browser-sync').create();
 const rollup = require('gulp-better-rollup');
 const babel = require('@rollup/plugin-babel');
 const resolve = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
+const sass = require('gulp-sass')(require('sass'));
+const tailwindcss = require('tailwindcss');
+const npmDist = require('gulp-npm-dist');
+const plumber = require('gulp-plumber');
 const terser = require('gulp-terser');
 const concat = require('gulp-concat');
-const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
-const tailwindcss = require('tailwindcss');
 const cleanCSS = require('gulp-clean-css');
-const npmDist = require('gulp-npm-dist');
-const path = require('path');
-const flatmap = require('gulp-flatmap');
-const rename = require('gulp-rename');
 
 const browserSync = () => {
   return new Promise((resolve) => {
@@ -50,30 +47,6 @@ const scriptsMain = () => {
     .pipe(terser())
     .pipe(gulp.dest('./build/scripts/'))
     .pipe(browsersync.stream());
-};
-
-const scriptsEditor = () => {
-  return gulp.src('views/blocks/**/editor.js').pipe(
-    flatmap((stream, file) => {
-      const folder = path.dirname(file.path);
-      return gulp
-        .src(file.path)
-        .pipe(
-          rollup(
-            {
-              plugins: [
-                babel({ babelHelpers: 'bundled' }),
-                resolve(),
-                commonjs(),
-              ],
-            },
-            'umd'
-          )
-        )
-        .pipe(rename('editor.min.js'))
-        .pipe(gulp.dest(folder));
-    })
-  );
 };
 
 const styles = () => {
@@ -147,7 +120,6 @@ const watch = () => {
   gulp.watch('./assets/scripts/**/*.js', gulp.series(scripts, scriptsMain));
   gulp.watch('./views/**/*.js', gulp.series(scripts, scriptsMain));
   gulp.watch('./**/*.twig').on('change', browsersync.reload);
-  gulp.watch('./views/blocks/**/scripts.js', gulp.series(scriptsEditor));
 };
 
 exports.libs = libs;
@@ -156,5 +128,4 @@ exports.stylesMain = stylesMain;
 exports.stylesAdmin = stylesAdmin;
 exports.scripts = scripts;
 exports.scriptsMain = scriptsMain;
-exports.scriptsEditor = scriptsEditor;
 exports.watch = gulp.series(gulp.parallel(watch, browserSync));

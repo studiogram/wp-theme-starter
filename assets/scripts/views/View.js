@@ -1,9 +1,29 @@
 export default class View {
-  constructor(el) {
+  constructor(el, editor = false) {
     this.el = el;
     this.eventsList = [];
     this.elements();
     this.events();
+    if (editor) this.observeEditor();
+  }
+
+  observeEditor() {
+    const $ = jQuery.noConflict();
+    $(document).on(
+      'change',
+      '.acf-field input, .acf-field textarea, .acf-field select',
+      this.updateBlock.bind(this)
+    );
+  }
+
+  updateBlock() {
+    const { select } = wp.data;
+    const selectedBlockId =
+      select('core/block-editor').getSelectedBlockClientId();
+    const blockId = this.el.getAttribute('data-block-id').replace('block_', '');
+    if (selectedBlockId === blockId) {
+      this.update();
+    }
   }
 
   elements() {}
@@ -21,7 +41,7 @@ export default class View {
       return;
 
     const fn = bind ? callback.bind(bind) : callback;
-    this.eventList.push({
+    this.eventsList.push({
       target,
       name,
       fn,
@@ -37,7 +57,7 @@ export default class View {
   update() {}
 
   destroy() {
-    for (const event of this.eventList) {
+    for (const event of this.eventsList) {
       if (event.dom) event.target.removeEventListener(event.name, event.fn);
       else event.target.off(event.name, event.fn);
       event.destroyed = true;

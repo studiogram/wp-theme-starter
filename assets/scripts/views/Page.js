@@ -10,7 +10,7 @@ export default class Page extends Renderer {
   onEnter() {
     this.page = document.querySelector('[data-taxi]').lastElementChild;
     this.views = [];
-    this.blocks = [];
+    this.blocks = {};
     this.elements();
     this.events();
     this.init();
