@@ -4,7 +4,6 @@ import View from '../../../assets/scripts/views/View';
 
 export class BlockExemple extends View {
   constructor(el) {
-    console.log('editor script: ', this.el);
     super(el);
     this.el = el;
     this.elems();
@@ -52,6 +51,7 @@ export class BlockExemple extends View {
   }
 
   destroy() {
+    console.log('destroy: ', this.el);
     if (this.swiper) {
       this.swiper.destroy();
     }

@@ -3,7 +3,6 @@ import { views, blocks } from './list';
 
 export default class Page extends Renderer {
   initialLoad() {
-    console.log('initialLoad');
     this.onEnter();
     this.onEnterCompleted();
   }
@@ -14,10 +13,10 @@ export default class Page extends Renderer {
     this.blocks = [];
     this.elements();
     this.events();
-    this.initViews();
+    this.init();
   }
 
-  initViews() {
+  init() {
     for (const view in views) {
       const foundViews = this.page.querySelectorAll(`[data-view="${view}"]`);
       foundViews.forEach((foundView) => {
